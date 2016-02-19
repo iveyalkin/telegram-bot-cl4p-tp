@@ -1,0 +1,6 @@
+{
+  "name": "CL4P-TP bot",
+  "description": "The CL4P-TP bot for Telegram.",
+  "image": "heroku/gradle",
+  "addons": [ "heroku-postgresql" ]
+}
