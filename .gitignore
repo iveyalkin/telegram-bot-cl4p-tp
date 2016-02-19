@@ -29,6 +29,8 @@ hs_err_pid*
 # logs files
 *.log
 
+.env
+
 # Certs
 *.jks
 *.cer
