@@ -1,1 +1,1 @@
-web: ./build/install/app/bin/app
+web: build/install/cl4p-tp-bot/bin/cl4p-tp-bot
