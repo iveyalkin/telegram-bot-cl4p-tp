@@ -10,6 +10,7 @@ buildscript {
     }
 }
 
+apply plugin:'application'
 apply plugin: 'kotlin'
 apply plugin: 'spring-boot'
 
@@ -25,6 +26,7 @@ repositories {
 springBoot {
     mainClass = 'com.rocketraccoons.hyenas.cl4ptp.ApplicationKt'
 }
+applicationName = "CL4P-TP bot"
 
 dependencies {
     //runtime "org.slf4j:slf4j-simple:1.7.12"
