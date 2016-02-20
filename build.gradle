@@ -55,6 +55,8 @@ sourceSets {
     }
 }
 
+// installDist is important to generate path in Heroku's Procfile:
+// build/install/telegram-bot-cl4p-tp/bin/telegram-bot-cl4p-tp -- this will be executed on start
 task stage {
   dependsOn(clean, installDist)
 }

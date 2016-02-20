@@ -10,6 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 open class Application
 
 fun main(args: Array<String>) {
-    System.setProperty("server.port", System.getenv("PORT")!!)
+    System.setProperty("server.port", System.getenv("PORT")!!) // watch out! important to start server within heroku
     SpringApplication.run(Application::class.java, *args)
 }
