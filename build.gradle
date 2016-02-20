@@ -27,7 +27,6 @@ repositories {
 springBoot {
     mainClass = 'com.rocketraccoons.hyenas.cl4ptp.ApplicationKt'
 }
-applicationName = "CL4P-TP bot"
 
 dependencies {
     //runtime "org.slf4j:slf4j-simple:1.7.12"
@@ -57,5 +56,5 @@ sourceSets {
 }
 
 task stage {
-  dependsOn build
+  dependsOn(clean, installDist)
 }

@@ -1,1 +1,1 @@
-web: build/install/cl4p-tp-bot/bin/cl4p-tp-bot
+web: build/install/telegram-bot-cl4p-tp/bin/telegram-bot-cl4p-tp
