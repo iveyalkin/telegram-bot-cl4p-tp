@@ -10,5 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 open class Application
 
 fun main(args: Array<String>) {
+    System.setProperty("server.port", System.getenv("PORT")!!)
     SpringApplication.run(Application::class.java, *args)
 }
