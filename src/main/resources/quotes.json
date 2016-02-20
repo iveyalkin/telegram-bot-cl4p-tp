@@ -1,0 +1,20 @@
+{
+  "greetings": [
+    "Initializing...",
+    "Wow! You're not dead?",
+    "I'm over here!",
+    "Did you find the Vault yet?",
+    "Greetings Traveller! There are new missions available at the Fyrestone Bounty-board!"
+  ],
+
+  "directions": [
+    "I can do more than open doors sir! We CL4P-TP units can be programmed to do anything from open doors to ninja-sassinate highly important Janitory officals!"
+  ],
+
+  "byes": [
+    "Oh my God, I'm leaking! I think I'm leaking! Ahhhh, I'm leaking! There's oil everywhere!",
+    "I can see through time...",
+    "My servos... are seizing...",
+    "I can see... the code"
+  ]
+}
