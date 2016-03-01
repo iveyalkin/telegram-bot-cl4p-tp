@@ -1,5 +1,5 @@
 {
-  "command-prefix": "/",
+  "command_prefix": "/",
 
   "commands": [
     "help",
@@ -11,7 +11,7 @@
     "stats"
   ],
 
-  "extended-commands": [
+  "extended_commands": [
     "wtf",
     "assassinate"
   ]

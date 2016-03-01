@@ -1,4 +1,4 @@
-package com.rocketraccoons.hyenas.cl4ptp
+package com.rocketraccoons.hyenas.cl4ptp.constant
 
 /**
  * Created by instu_000 on 2/20/2016.

@@ -56,10 +56,38 @@ sourceSets {
             srcDir "test/main/kotlin"
         }
     }
+    local {
+        kotlin {
+            srcDir "src/local/kotlin"
+        }
+    }
+    remote {
+        kotlin {
+            srcDir "src/remote/kotlin"
+        }
+    }
 }
 
 // installDist is important to generate path in Heroku's Procfile:
 // build/install/telegram-bot-cl4p-tp/bin/telegram-bot-cl4p-tp -- this will be executed on start
 task stage {
   dependsOn(clean, installDist)
+}
+
+task localJar (type: Jar, dependsOn: jar) {
+    from sourceSets.local.output
+    classifier = 'localJar'
+}
+
+task remoteJar (type: Jar, dependsOn: jar) {
+    from sourceSets.remote.output
+    classifier = 'remoteJar'
+}
+
+task bootJar
+bootJar.dependsOn localJar
+build.dependsOn(bootJar)
+
+task localRun (type: BootRepackage, dependsOn: [jar, localJar]) {
+    withJarTask = localJar
 }
