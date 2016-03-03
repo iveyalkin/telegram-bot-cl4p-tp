@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
  */
 @Component
 open class Scheduler @Autowired constructor(val bot: BotController) {
-    @Scheduled(cron = "0 14/37 8-23/3 * * MON-THU,SAT,SUN")
+    @Scheduled(cron = "0 42 5-20/3 * * MON-THU,SAT,SUN")
     open fun onPostLulz() {
         bot.sendLulz()
     }
