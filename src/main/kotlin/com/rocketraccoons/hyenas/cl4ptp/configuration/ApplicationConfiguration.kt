@@ -1,7 +1,7 @@
 package com.rocketraccoons.hyenas.cl4ptp.configuration
 
 import com.rocketraccoons.hyenas.cl4ptp.constant.Constants
-import com.rocketraccoons.hyenas.cl4ptp.constant.EnvironmentConstants
+import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
 import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.config.ConfigurableBeanFactory

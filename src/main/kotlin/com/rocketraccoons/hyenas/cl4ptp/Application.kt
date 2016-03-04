@@ -1,5 +1,7 @@
 package com.rocketraccoons.hyenas.cl4ptp
 
+import com.rocketraccoons.hyenas.cl4ptp.bean.BotInitializer
+import org.apache.log4j.BasicConfigurator
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
@@ -19,8 +21,11 @@ fun main(args: Array<String>) {
     if (!port.isNullOrBlank()) {
         System.setProperty("server.port", port) // watch out! important to start server within heroku
     }
-    SpringApplicationBuilder(Application::class.java)
+    val context = SpringApplicationBuilder(Application::class.java)
             .properties(mapOf("spring.http.converters.preferred-json-mapper" to "gson"))
             .build()
             .run(*args)
+
+    BasicConfigurator.configure()
+    context.getBean(BotInitializer::class.java).initialize()
 }

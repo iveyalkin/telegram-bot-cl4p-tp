@@ -5,7 +5,7 @@ package com.rocketraccoons.hyenas.cl4ptp.constant
  */
 class Constants {
     companion object {
-        val TOKEN_ENVIRONMENT_VAR = "BOT_AUTHENTICATION_TOKEN"
-        val WEBHOOK_UUID_ENVIRONMENT_VAR = "BOT_WEBHOOK_UUID"
+        const val TOKEN_ENVIRONMENT_VAR = "BOT_AUTHENTICATION_TOKEN"
+        const val WEBHOOK_UUID_ENVIRONMENT_VAR = "BOT_WEBHOOK_UUID"
     }
 }

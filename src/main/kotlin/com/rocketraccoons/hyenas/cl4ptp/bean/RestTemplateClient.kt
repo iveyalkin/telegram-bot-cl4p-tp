@@ -1,7 +1,8 @@
-package com.rocketraccoons.hyenas.cl4ptp
+package com.rocketraccoons.hyenas.cl4ptp.bean
 
 import com.rocketraccoons.hyenas.cl4ptp.constant.ApiConstants
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
+import com.rocketraccoons.hyenas.cl4ptp.model.User
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.converter.FormHttpMessageConverter
@@ -15,18 +16,20 @@ import org.springframework.web.client.RestTemplate
 /**
  * Created by instu_000 on 3/1/2016.
  */
-class RestClientImpl : RestClient {
+class RestTemplateClient(restTemplate: RestTemplate, apiConstants: ApiConstants) : RestClient {
     private val restDelegate: RestTemplate
     private var apiConstants: ApiConstants
 
     private val stringResponseExtractor: ResponseExtractor<String>
 
-    constructor(restTemplate: RestTemplate, apiConstants: ApiConstants) {
+    init {
         restDelegate = restTemplate
         this.apiConstants = apiConstants
         stringResponseExtractor = HttpMessageConverterExtractor<String>(String::class.java,
                 listOf(StringHttpMessageConverter(Charsets.UTF_8)))
     }
+
+    override fun getMe() = restDelegate.getForObject(apiConstants.telegramUrl("getMe"), User::class.java);
 
     override fun getUpdates(): Update = restDelegate.getForObject(apiConstants.telegramUrl("getUpdates"), Update::class.java)
 

@@ -4,10 +4,10 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
-import com.rocketraccoons.hyenas.cl4ptp.RestClient
-import com.rocketraccoons.hyenas.cl4ptp.RestClientImpl
-import com.rocketraccoons.hyenas.cl4ptp.constant.EnvironmentConstants
+import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
+import com.rocketraccoons.hyenas.cl4ptp.bean.RestTemplateClient
 import com.rocketraccoons.hyenas.cl4ptp.constant.ApiConstantsImpl
+import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -53,7 +53,7 @@ open class NetworkClientConfiguration {
 
     @Bean
     open fun restClienBean(restTemplate: RestTemplate, environmentVars: EnvironmentConstants): RestClient {
-        return RestClientImpl(restTemplate, ApiConstantsImpl(environmentVars))
+        return RestTemplateClient(restTemplate, ApiConstantsImpl(environmentVars))
     }
 
     val customRequestFabric = object : ClientHttpRequestFactory {

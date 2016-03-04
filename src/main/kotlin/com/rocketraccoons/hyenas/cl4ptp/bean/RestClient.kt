@@ -1,12 +1,17 @@
-package com.rocketraccoons.hyenas.cl4ptp
+package com.rocketraccoons.hyenas.cl4ptp.bean
 
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
+import com.rocketraccoons.hyenas.cl4ptp.model.User
 
 /**
  * Created by instu_000 on 3/1/2016.
  */
 interface RestClient {
-    fun getUpdates(): Update
+    // telegram API
+    fun getMe(): User
+    fun getUpdates(): Update?
     fun sendMessage(chatId: String, text: String)
+
+    // third-party API
     fun fetchQuote(): String
 }

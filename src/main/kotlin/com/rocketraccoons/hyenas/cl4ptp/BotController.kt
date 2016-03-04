@@ -1,9 +1,11 @@
 package com.rocketraccoons.hyenas.cl4ptp
 
-import com.rocketraccoons.hyenas.cl4ptp.constant.EnvironmentConstants
 import com.rocketraccoons.hyenas.cl4ptp.model.BotCommands
 import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
+import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
+import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
+import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -16,15 +18,11 @@ class BotController @Autowired constructor(
         val restClient: RestClient,
         val commands: BotCommands,
         val messages: BotMessages,
+        val quoteProcessor: QuoteProcessor,
         /*val messageProcessor: IMessageProcessor<Update>,*/
         val environmentVars: EnvironmentConstants,
         val logger: Logger
 ) {
-
-    @RequestMapping()
-    fun onHome(): Update {
-        return restClient.getUpdates()
-    }
 
     @RequestMapping("/bot", method = arrayOf(RequestMethod.POST))
     fun onHook(@RequestParam(name = "", defaultValue = "") path: String, @RequestBody update: Update) {
@@ -43,22 +41,7 @@ class BotController @Autowired constructor(
     }
 
     @RequestMapping("/lulz")
-    fun sendLulz(): String {
-        val bashQuote = handleBash(restClient.fetchQuote())
-        restClient.sendMessage("-110657123", bashQuote)
-        return bashQuote
+    fun sendLulz() {
+        restClient.sendMessage("-110657123", quoteProcessor.handleQuote(restClient.fetchQuote()))
     }
-}
-
-
-
-fun handleBash(html: String): String {
-    val delims = arrayOf("<' + '/span><' + 'div", "<' + '/div><' + 'small><' + 'a");
-    val strs = html.split(delimiters = *delims, ignoreCase = true);
-    return strs[1].substring(strs[1].indexOf('>') + 1)
-            .replace("<' + 'br>", "\n")
-            .replace("<' + 'br />", "\n")
-            .replace("&quot;", "\"")
-            .replace("&lt;", "<")
-            .replace("&gt;", ">");
 }

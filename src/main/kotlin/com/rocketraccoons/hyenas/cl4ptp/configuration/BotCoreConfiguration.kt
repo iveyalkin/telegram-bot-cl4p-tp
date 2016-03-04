@@ -2,8 +2,13 @@ package com.rocketraccoons.hyenas.cl4ptp.configuration
 
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
+import com.rocketraccoons.hyenas.cl4ptp.bean.BotInitializer
 import com.rocketraccoons.hyenas.cl4ptp.model.BotCommands
 import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
+import com.rocketraccoons.hyenas.cl4ptp.bean.BushQuoteProcessor
+import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
+import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
+import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.context.annotation.Bean
@@ -42,4 +47,10 @@ open class BotCoreConfiguration {
             stream?.close()
         }
     }
+
+    @Bean
+    open fun quoteProcessor(): QuoteProcessor = BushQuoteProcessor()
+
+    @Bean
+    open fun botInitializer(restClient: RestClient, logger: Logger) = BotInitializer(restClient, logger)
 }
