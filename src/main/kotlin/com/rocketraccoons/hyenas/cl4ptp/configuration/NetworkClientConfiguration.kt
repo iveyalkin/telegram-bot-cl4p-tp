@@ -3,12 +3,10 @@ package com.rocketraccoons.hyenas.cl4ptp.configuration
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializer
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestTemplateClient
 import com.rocketraccoons.hyenas.cl4ptp.constant.ApiConstantsImpl
 import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
-import com.rocketraccoons.hyenas.cl4ptp.model.Update
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -30,10 +28,11 @@ open class NetworkClientConfiguration {
     constructor() {
         gson = GsonBuilder().
                 setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(Update::class.java,
-                        JsonDeserializer<com.rocketraccoons.hyenas.cl4ptp.model.Update> { je, type, jdc ->
-                            jdc?.deserialize(je?.asJsonObject?.get("result")?.asJsonArray?.get(0), type)
-                        })
+                // TODO: not now, maybe latter...
+//                .registerTypeAdapter(Update::class.java,
+//                        JsonDeserializer<com.rocketraccoons.hyenas.cl4ptp.model.Update> { je, type, jdc ->
+//                            jdc?.deserialize(je?.asJsonObject?.get("result")?.asJsonArray?.get(0), type)
+//                        })
                 .create()
     }
 

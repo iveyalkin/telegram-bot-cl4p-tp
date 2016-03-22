@@ -3,8 +3,8 @@ package com.rocketraccoons.hyenas.cl4ptp.model
 /**
  * Created by instu_000 on 2/19/2016.
  */
-data class Message(val messageId: String,
-                   val from: String?,
+data class Message(val messageId: Int,
+                   val from: User,
                    val date: Long,
                    val char: Chat,
                    val forwardFrom: User?,
