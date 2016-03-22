@@ -29,7 +29,7 @@ class BotController @Autowired constructor(
     @RequestMapping("/{uuid}/botHook", headers = arrayOf("Content-Type=application/json"), method = arrayOf(RequestMethod.POST))
     fun onHook(@RequestBody update: Update, @PathVariable uuid: String) {
         if (uuid == environmentVars.webhookUuid) {
-            restClient.sendMessage(CHAT_ID, "Update id ${update.updateId}: ${update.message}")
+            //restClient.sendMessage(CHAT_ID, "Update id ${update.updateId}: ${update.message}")
 
             /*val updateHandler = messageProcessor.process(update)
             while(updateHandler.hasNext()) {
@@ -64,6 +64,6 @@ class BotController @Autowired constructor(
 
     // TODO: c
     companion object {
-        val CHAT_ID = "167604177" // rueHbl"-110657123"
+        val CHAT_ID = /*"167604177"*/ "-110657123" // rueHbl
     }
 }
