@@ -10,7 +10,7 @@ interface RestClient {
     // telegram API
     fun getMe(): User
     fun getUpdates(): List<Update>?
-    fun sendMessage(chatId: String, text: String)
+    fun sendMessage(chatId: Long, text: String)
 
     // third-party API
     fun fetchQuote(): String

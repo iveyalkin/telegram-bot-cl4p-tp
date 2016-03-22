@@ -35,7 +35,7 @@ class RestOkHttpClient(val httpClient: OkHttpClient,
         return null
     }
 
-    override fun sendMessage(chatId: String, text: String) {
+    override fun sendMessage(chatId: Long, text: String) {
         throw UnsupportedOperationException()
     }
 

@@ -3,10 +3,10 @@ package com.rocketraccoons.hyenas.cl4ptp.model
 /**
  * Created by instu_000 on 2/19/2016.
  */
-data class Message(val messageId: Int,
+data class Message(val messageId: Long,
                    val from: User,
                    val date: Long,
-                   val char: Chat,
+                   val chat: Chat,
                    val forwardFrom: User?,
                    val forwardDate: Long?,
                    val replyToMessage: Message?,

@@ -34,10 +34,11 @@ class RestTemplateClient(restTemplate: RestTemplate, apiConstants: ApiConstants)
 
     override fun getUpdates(): List<Update> = restDelegate.getForObject(apiConstants.telegramUrl("getUpdates"), ApiResponseUpdates::class.java).result
 
-    override fun sendMessage(chatId: String, text: String) = restDelegate.execute<Unit>(apiConstants.telegramUrl("sendMessage"), HttpMethod.POST,
+    override fun sendMessage(chatId: Long, text: String) = restDelegate.execute<Unit>(apiConstants.telegramUrl("sendMessage"), HttpMethod.POST,
             RequestCallback {
+                // explicitly convert to String, since there is no default HttpMessageConverter for Long, and Spring assumes APPLICATION_FORM_URLENCODED is all about Strings... sucks ):
                 FormHttpMessageConverter().write(LinkedMultiValueMap<String, String>(
-                        mapOf("text" to listOf(text), "chat_id" to listOf(chatId))),
+                        mapOf("text" to listOf(text), "chat_id" to listOf(chatId.toString()))),
                         MediaType.APPLICATION_FORM_URLENCODED, it)
             }, null)
 
