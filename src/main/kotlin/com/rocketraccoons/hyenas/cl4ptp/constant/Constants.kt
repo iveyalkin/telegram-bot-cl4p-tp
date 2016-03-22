@@ -7,5 +7,6 @@ class Constants {
     companion object {
         const val TOKEN_ENVIRONMENT_VAR = "BOT_AUTHENTICATION_TOKEN"
         const val WEBHOOK_UUID_ENVIRONMENT_VAR = "BOT_WEBHOOK_UUID"
+        const val MONGO_DB_URI_ENVIRONMENT_VAR = "MONGO_URI"
     }
 }

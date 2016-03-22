@@ -20,7 +20,8 @@ open class ApplicationConfiguration {
     open fun environmentConstants(): EnvironmentConstants {
         return EnvironmentConstants (
                 authenticationToken = System.getenv(Constants.TOKEN_ENVIRONMENT_VAR) ?: "",
-                webhookUuid = System.getenv(Constants.WEBHOOK_UUID_ENVIRONMENT_VAR) ?: ""
+                webhookUuid = System.getenv(Constants.WEBHOOK_UUID_ENVIRONMENT_VAR) ?: "",
+                mongoUri = System.getenv(Constants.MONGO_DB_URI_ENVIRONMENT_VAR) ?: ""
         )
     }
 

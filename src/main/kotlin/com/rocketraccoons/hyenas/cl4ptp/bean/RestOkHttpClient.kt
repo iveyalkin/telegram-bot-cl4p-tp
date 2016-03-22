@@ -2,6 +2,7 @@ package com.rocketraccoons.hyenas.cl4ptp.bean
 
 import com.google.gson.Gson
 import com.rocketraccoons.hyenas.cl4ptp.constant.ApiConstants
+import com.rocketraccoons.hyenas.cl4ptp.model.ApiResponseUpdates
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
 import com.rocketraccoons.hyenas.cl4ptp.model.User
 import okhttp3.HttpUrl
@@ -18,7 +19,7 @@ class RestOkHttpClient(val httpClient: OkHttpClient,
         throw UnsupportedOperationException()
     }
 
-    override fun getUpdates(): Update? {
+    override fun getUpdates(): List<Update>? {
         val response = httpClient.newCall(Request.Builder()
                 .url(HttpUrl.Builder()
                         .host(apiConstants.telegramUrl("getUpdates"))
@@ -28,7 +29,8 @@ class RestOkHttpClient(val httpClient: OkHttpClient,
                 .build())
                 .execute()
         if (response.isSuccessful) {
-            return gson.fromJson(response.body().charStream(), Update::class.java)
+            // TODO: omg :) object : TypeToken<ArrayList<Update>>(){}.type
+            return gson.fromJson(response.body().charStream(), ApiResponseUpdates::class.java).result
         }
         return null
     }

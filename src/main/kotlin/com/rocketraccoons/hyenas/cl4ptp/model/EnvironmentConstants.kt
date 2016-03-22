@@ -5,5 +5,6 @@ package com.rocketraccoons.hyenas.cl4ptp.model
  */
 data class EnvironmentConstants constructor(
         val authenticationToken: String,
-        val webhookUuid: String
+        val webhookUuid: String,
+        val mongoUri: String
 ) {}

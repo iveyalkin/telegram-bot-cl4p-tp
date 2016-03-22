@@ -24,9 +24,11 @@ class BotController @Autowired constructor(
         val logger: Logger
 ) {
 
-    @RequestMapping("/bot", method = arrayOf(RequestMethod.POST))
-    fun onHook(@RequestParam(name = "", defaultValue = "") path: String, @RequestBody update: Update) {
-        if (path.startsWith("/bot{${environmentVars.webhookUuid}}", true)) {
+    @RequestMapping("/botHook", method = arrayOf(RequestMethod.POST))
+    fun onHook(@RequestParam(name = "hookUuid", defaultValue = "") webhookUuid: String, @RequestBody update: Update) {
+        if (webhookUuid == environmentVars.webhookUuid) {
+            restClient.sendMessage(CHAT_ID, "Update id ${update.updateId}: ${update.message}")
+
             /*val updateHandler = messageProcessor.process(update)
             while(updateHandler.hasNext()) {
                 val (command, context) = updateHandler.next
@@ -42,6 +44,11 @@ class BotController @Autowired constructor(
 
     @RequestMapping("/lulz")
     fun sendLulz() {
-        restClient.sendMessage("-110657123", quoteProcessor.handleQuote(restClient.fetchQuote()))
+        restClient.sendMessage(CHAT_ID, quoteProcessor.handleQuote(restClient.fetchQuote()))
+    }
+
+    // TODO: temporary
+    companion object {
+        val CHAT_ID = "167604177" // rueHbl"-110657123"
     }
 }

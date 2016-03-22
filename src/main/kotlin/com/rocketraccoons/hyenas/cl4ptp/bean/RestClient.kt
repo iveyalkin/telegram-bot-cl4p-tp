@@ -9,7 +9,7 @@ import com.rocketraccoons.hyenas.cl4ptp.model.User
 interface RestClient {
     // telegram API
     fun getMe(): User
-    fun getUpdates(): Update?
+    fun getUpdates(): List<Update>?
     fun sendMessage(chatId: String, text: String)
 
     // third-party API
