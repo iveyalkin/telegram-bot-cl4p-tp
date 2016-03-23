@@ -2,10 +2,7 @@ package com.rocketraccoons.hyenas.cl4ptp
 
 import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
-import com.rocketraccoons.hyenas.cl4ptp.model.BotCommands
-import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
-import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
-import com.rocketraccoons.hyenas.cl4ptp.model.Update
+import com.rocketraccoons.hyenas.cl4ptp.model.*
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -30,17 +27,19 @@ class BotController @Autowired constructor(
     var lastUpdateId: Long = 0L;
 
     @RequestMapping("/{uuid}/botHook", headers = arrayOf("Content-Type=application/json"), method = arrayOf(RequestMethod.POST))
-    fun onHook(@RequestBody update: Update, @PathVariable uuid: String) {
-        checkExpoisedApiRequest (uuid) {
-            logger.trace("Received webhook callback with: $update")
+    fun onHook(@RequestBody update: Update, @PathVariable uuid: String): UpdateSendMessagePayload? {
+        return checkExpoisedApiRequest (uuid) {
+            logger.info("Received webhook callback with: $update")
+            var response: UpdateSendMessagePayload? = null
 
             if (update.updateId > lastUpdateId) {
+                lastUpdateId = update.updateId
                 if (update.message.text?.contains("/help", true) ?: false) {
-                    restClient.sendMessage(update.message.chat.id, "Not yet. Keep Calm.")
-                }
-                //restClient.sendMessage(CHAT_ID, "Update id ${update.updateId}: ${update.message}")
+                    response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
+                } else if (update.message.text?.contains("ваня", true) ?: false) {
+                    response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
 
-                /*val updateHandler = messageProcessor.process(update)
+                    /*val updateHandler = messageProcessor.process(update)
                 while(updateHandler.hasNext()) {
                     val (command, context) = updateHandler.next
                     when (command) {
@@ -50,16 +49,17 @@ class BotController @Autowired constructor(
                         else -> {}
                     }
                 }*/
-
-                lastUpdateId = update.updateId
+                }
             }
+
+            response
         }
     }
 
     @RequestMapping("/{uuid}/lulz", method = arrayOf(RequestMethod.POST))
     fun sendLulz(@PathVariable uuid: String) {
         checkExpoisedApiRequest (uuid) {
-            logger.trace("Received lulz request")
+            logger.info("Received lulz request")
             restClient.sendMessage(CHAT_ID, quoteProcessor.handleQuote(restClient.fetchQuote()))
         }
     }
