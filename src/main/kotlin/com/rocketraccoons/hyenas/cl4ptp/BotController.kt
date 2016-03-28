@@ -37,7 +37,7 @@ class BotController @Autowired constructor(
                 if (update.message.text?.contains("/help", true) ?: false) {
                     response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
                 } else if (update.message.text?.contains("/echo", true) ?: false) {
-                    val repeatQuot = update.message.text!!.substringAfter("/call", "")
+                    val repeatQuot = update.message.text!!.substringAfter("/echo", "")
                     if (repeatQuot.isNotEmpty()) {
                         response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
                     }
