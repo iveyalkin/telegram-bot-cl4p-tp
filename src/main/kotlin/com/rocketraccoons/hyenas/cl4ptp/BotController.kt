@@ -2,6 +2,7 @@ package com.rocketraccoons.hyenas.cl4ptp
 
 import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
+import com.rocketraccoons.hyenas.cl4ptp.db.DatabaseClient
 import com.rocketraccoons.hyenas.cl4ptp.model.*
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +19,7 @@ class BotController @Autowired constructor(
         val restClient: RestClient,
         val commands: BotCommands,
         val messages: BotMessages,
+        val databaseClient: DatabaseClient,
         val quoteProcessor: QuoteProcessor,
         /*val messageProcessor: IMessageProcessor<Update>,*/
         val environmentVars: EnvironmentConstants,
@@ -38,6 +40,8 @@ class BotController @Autowired constructor(
                     response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
                 } else if (update.message.text?.contains("/echo", true) ?: false) {
                     val repeatQuot = update.message.text!!.substringAfter("/echo", "")
+                            .substringAfter("@${databaseClient.getBotUser().username}")
+                            .trim()
                     if (repeatQuot.isNotEmpty()) {
                         response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
                     } else {
