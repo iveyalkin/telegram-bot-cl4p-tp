@@ -36,19 +36,23 @@ class BotController @Autowired constructor(
                 lastUpdateId = update.updateId
                 if (update.message.text?.contains("/help", true) ?: false) {
                     response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
-                } else if (update.message.text?.contains("ваня", true) ?: false) {
-                    response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
-
-                    /*val updateHandler = messageProcessor.process(update)
-                while(updateHandler.hasNext()) {
-                    val (command, context) = updateHandler.next
-                    when (command) {
-                        how to config from json?
-                        "greeting" -> {}
-                        "ping" -> {}
-                        else -> {}
+                } else if (update.message.text?.contains("/call", true) ?: false) {
+                    val repeatQuot = update.message.text!!.substringAfter("/call", "")
+                    if (repeatQuot.isNotEmpty()) {
+                        response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
                     }
-                }*/
+//                    val updateHandler = messageProcessor.process(update)
+//                    while(updateHandler.hasNext()) {
+//                        val (command, context) = updateHandler.next
+//                        when (command) {
+//                            how to config from json?
+//                            "greeting" -> {}
+//                            "ping" -> {}
+//                            else -> {}
+//                        }
+//                    }
+                } else if (BAH_ID == update.message.from.id && update.message.text?.contains("?", true) ?: false) {
+                    response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
                 }
             }
 
@@ -90,6 +94,7 @@ class BotController @Autowired constructor(
 
     // TODO: c
     companion object {
-        val CHAT_ID = /*167604177*/ -1001045537736 // rueHbl
+        val CHAT_ID = /*167604177*/ -1001045537736L // rueHbl
+        val BAH_ID = 142794370L
     }
 }
