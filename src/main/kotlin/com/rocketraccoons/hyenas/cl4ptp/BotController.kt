@@ -40,7 +40,8 @@ class BotController @Autowired constructor(
                     response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
                 } else if (update.message.text?.contains("/echo", true) ?: false) {
                     val repeatQuot = update.message.text!!.substringAfter("/echo", "")
-                            .substringAfter("@${databaseClient.getBotUser().username}")
+                            //.substringAfter("@${databaseClient.getBotUser().username}")
+                            .substringAfter(' ')
                             .trim()
                     if (repeatQuot.isNotEmpty()) {
                         response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
