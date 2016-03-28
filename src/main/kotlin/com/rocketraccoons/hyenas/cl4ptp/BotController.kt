@@ -40,6 +40,8 @@ class BotController @Autowired constructor(
                     val repeatQuot = update.message.text!!.substringAfter("/echo", "")
                     if (repeatQuot.isNotEmpty()) {
                         response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
+                    } else {
+                        response = UpdateSendMessagePayload(update.message.chat.id, "I'll repeat the rest of a message following the ${"/echo"} command.", update.message.messageId)
                     }
 //                    val updateHandler = messageProcessor.process(update)
 //                    while(updateHandler.hasNext()) {
