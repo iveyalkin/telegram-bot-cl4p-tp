@@ -41,7 +41,7 @@ class BotController @Autowired constructor(
                 } else if (update.message.text?.contains("/echo", true) ?: false) {
                     val repeatQuot = update.message.text!!.substringAfter("/echo", "")
                             //.substringAfter("@${databaseClient.getBotUser().username}")
-                            .substringAfter(' ')
+                            .substringAfter(' ', "")
                             .trim()
                     if (repeatQuot.isNotEmpty()) {
                         response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
@@ -58,9 +58,9 @@ class BotController @Autowired constructor(
 //                            else -> {}
 //                        }
 //                    }
-                } else if (BAH_ID == update.message.from.id && update.message.text?.contains("?", true) ?: false) {
+                } /*else if (BAH_ID == update.message.from.id && update.message.text?.contains("?", true) ?: false) {
                     response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
-                }
+                }*/
             }
 
             response
