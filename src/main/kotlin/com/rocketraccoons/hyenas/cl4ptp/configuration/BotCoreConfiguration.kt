@@ -53,5 +53,5 @@ open class BotCoreConfiguration {
     open fun quoteProcessor(): QuoteProcessor = BashQuoteProcessor()
 
     @Bean
-    open fun botInitializer(restClient: RestClient, databaseClient: DatabaseClient, logger: Logger) = BotInitializer(restClient, databaseClient, logger)
+    open fun botInitializer(restClient: RestClient, databaseClient: DatabaseClient, botMessages: BotMessages, logger: Logger) = BotInitializer(restClient, databaseClient, botMessages, logger)
 }

@@ -66,7 +66,7 @@ class BotController @Autowired constructor(
                     val text = update.message.text
                     if (text.contains("куп", "воз", "взя", "бери", "бра", "бре")) {
                         if (text.contains("ящик", "коробку", "иксбокс", "хуан", "xbox")) {
-                            response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
+                            response = UpdateSendMessagePayload(update.message.chat.id, "Ваня, купи xbox!", update.message.messageId)
                         }
                     }
                 }
