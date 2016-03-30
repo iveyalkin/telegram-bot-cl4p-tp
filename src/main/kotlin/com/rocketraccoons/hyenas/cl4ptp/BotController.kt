@@ -61,11 +61,23 @@ class BotController @Autowired constructor(
                 } /*else if (BAH_ID == update.message.from.id && update.message.text?.contains("?", true) ?: false) {
                     response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
                 }*/
+
+                else if (null != update.message.text) {
+                    val text = update.message.text
+                    if (text.contains("куп", "воз", "взя", "бери", "бра", "бре")) {
+                        if (text.contains("ящик", "коробку", "иксбокс", "хуан", "xbox")) {
+                            response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
+                        }
+                    }
+                }
+
             }
 
             response
         }
     }
+
+    private fun String.contains(vararg strings: String) = null != strings.find { this.contains(it, true) }
 
     @RequestMapping("/{uuid}/lulz", method = arrayOf(RequestMethod.POST))
     fun sendLulz(@PathVariable uuid: String) {
