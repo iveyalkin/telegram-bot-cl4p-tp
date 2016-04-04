@@ -1,8 +1,11 @@
 {
   "command_prefix": "/",
+  "direct_message_prefix": "@",
 
   "commands": [
     "help",
+    "echo",
+
     "ping",
     "init",
     "halt",

@@ -2,8 +2,13 @@ package com.rocketraccoons.hyenas.cl4ptp
 
 import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
+import com.rocketraccoons.hyenas.cl4ptp.core.MessageProcessor
+import com.rocketraccoons.hyenas.cl4ptp.core.command.model.BotCommands
 import com.rocketraccoons.hyenas.cl4ptp.db.DatabaseClient
-import com.rocketraccoons.hyenas.cl4ptp.model.*
+import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
+import com.rocketraccoons.hyenas.cl4ptp.model.EnvironmentConstants
+import com.rocketraccoons.hyenas.cl4ptp.model.Update
+import com.rocketraccoons.hyenas.cl4ptp.model.UpdateSendMessagePayload
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -21,7 +26,7 @@ class BotController @Autowired constructor(
         val messages: BotMessages,
         val databaseClient: DatabaseClient,
         val quoteProcessor: QuoteProcessor,
-        /*val messageProcessor: IMessageProcessor<Update>,*/
+        val messageProcessor: MessageProcessor,
         val environmentVars: EnvironmentConstants,
         val logger: Logger
 ) {
@@ -32,52 +37,9 @@ class BotController @Autowired constructor(
     fun onHook(@RequestBody update: Update, @PathVariable uuid: String): UpdateSendMessagePayload? {
         return checkExpoisedApiRequest (uuid) {
             logger.info("Received webhook callback with: $update")
-            var response: UpdateSendMessagePayload? = null
-
-            if (update.updateId > lastUpdateId) {
-                lastUpdateId = update.updateId
-                if (update.message.text?.contains("/help", true) ?: false) {
-                    response = UpdateSendMessagePayload(update.message.chat.id, "Not yet. Keep Calm.", update.message.messageId)
-                } else if (update.message.text?.contains("/echo", true) ?: false) {
-                    val repeatQuot = update.message.text!!.substringAfter("/echo", "")
-                            //.substringAfter("@${databaseClient.getBotUser().username}")
-                            .substringAfter(' ', "")
-                            .trim()
-                    if (repeatQuot.isNotEmpty()) {
-                        response = UpdateSendMessagePayload(update.message.chat.id, "$repeatQuot $repeatQuot $repeatQuot", update.message.messageId)
-                    } else {
-                        response = UpdateSendMessagePayload(update.message.chat.id, "I'll repeat the rest of a message following the ${"/echo"} command.", update.message.messageId)
-                    }
-//                    val updateHandler = messageProcessor.process(update)
-//                    while(updateHandler.hasNext()) {
-//                        val (command, context) = updateHandler.next
-//                        when (command) {
-//                            how to config from json?
-//                            "greeting" -> {}
-//                            "ping" -> {}
-//                            else -> {}
-//                        }
-//                    }
-                } /*else if (BAH_ID == update.message.from.id && update.message.text?.contains("?", true) ?: false) {
-                    response = UpdateSendMessagePayload(update.message.chat.id, "Если ты Ваня, то можно все.", update.message.messageId)
-                }*/
-
-                else if (null != update.message.text) {
-                    val text = update.message.text
-                    if (text.contains("куп", "воз", "взя", "бери", "бра", "бре")) {
-                        if (text.contains("ящик", "коробку", "иксбокс", "хуан", "xbox")) {
-                            response = UpdateSendMessagePayload(update.message.chat.id, "Ваня, купи xbox!", update.message.messageId)
-                        }
-                    }
-                }
-
-            }
-
-            response
+            messageProcessor.process(update)?.execute() ?: null
         }
     }
-
-    private fun String.contains(vararg strings: String) = null != strings.find { this.contains(it, true) }
 
     @RequestMapping("/{uuid}/lulz", method = arrayOf(RequestMethod.POST))
     fun sendLulz(@PathVariable uuid: String) {

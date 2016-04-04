@@ -2,13 +2,16 @@ package com.rocketraccoons.hyenas.cl4ptp.configuration
 
 import com.google.gson.Gson
 import com.google.gson.stream.JsonReader
-import com.rocketraccoons.hyenas.cl4ptp.bean.BotInitializer
-import com.rocketraccoons.hyenas.cl4ptp.model.BotCommands
-import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
 import com.rocketraccoons.hyenas.cl4ptp.bean.BashQuoteProcessor
+import com.rocketraccoons.hyenas.cl4ptp.bean.BotInitializer
 import com.rocketraccoons.hyenas.cl4ptp.bean.QuoteProcessor
 import com.rocketraccoons.hyenas.cl4ptp.bean.RestClient
+import com.rocketraccoons.hyenas.cl4ptp.core.MessageProcessor
+import com.rocketraccoons.hyenas.cl4ptp.core.MessageProcessorImpl
+import com.rocketraccoons.hyenas.cl4ptp.core.ValueStorage
+import com.rocketraccoons.hyenas.cl4ptp.core.command.model.BotCommands
 import com.rocketraccoons.hyenas.cl4ptp.db.DatabaseClient
+import com.rocketraccoons.hyenas.cl4ptp.model.BotMessages
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
@@ -29,15 +32,19 @@ open class BotCoreConfiguration {
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
+    open fun valueStorage() = ValueStorage()
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     open fun botCommands(): BotCommands = inflateResource("commands.json", BotCommands::class.java)
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     open fun botMessages(): BotMessages = inflateResource("quotes.json", BotMessages::class.java)
 
-    /*@Bean
+    @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-    open fun messageProcessor(): IMessageProcessor<Update> = MessageProcessorImpl()*/
+    open fun messageProcessor(botCommands: BotCommands, storage: ValueStorage): MessageProcessor = MessageProcessorImpl(botCommands, storage)
 
     private fun <T> inflateResource(fileName: String, type: Type): T {
         var stream: InputStream? = null
