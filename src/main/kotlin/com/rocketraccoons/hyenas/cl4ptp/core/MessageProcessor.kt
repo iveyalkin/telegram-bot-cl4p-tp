@@ -27,9 +27,10 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
             val directMessageStart = text.indexOf(botCommands.directMessagePrefix)
             when {
                 ((commandStart > -1 && directMessageStart < 0) || (commandStart > -1 && directMessageStart > commandStart)) -> {
-                    val commandString = text.substring(commandStart + 1, text.indexOf(' ', commandStart + 1))
-                            .split(botCommands.directMessagePrefix)
-                    val command = botCommands.getMessageHandlerTask(commandString[0], message)
+                    val endIndex = text.indexOf(' ', commandStart + 1)
+                    val commandString = text.substring(commandStart + 1, if (endIndex > -1) endIndex else text.length)
+                            .split(botCommands.directMessagePrefix)[0]
+                    val command = botCommands.getMessageHandlerTask(commandString, message)
                     return command
                 }
                 ((directMessageStart > -1 && commandStart < 0) || (directMessageStart > -1 && commandStart > directMessageStart)) -> return null
@@ -56,6 +57,3 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
         return null
     }
 }
-
-
-
