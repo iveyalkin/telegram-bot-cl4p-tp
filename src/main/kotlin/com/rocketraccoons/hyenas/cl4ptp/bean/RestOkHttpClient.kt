@@ -42,4 +42,8 @@ class RestOkHttpClient(val httpClient: OkHttpClient,
     override fun fetchQuote(): String {
         throw UnsupportedOperationException()
     }
+
+    override fun fetchFridaySpecial(): String {
+        throw UnsupportedOperationException()
+    }
 }

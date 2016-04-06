@@ -49,6 +49,14 @@ class BotController @Autowired constructor(
         }
     }
 
+    @RequestMapping("/{uuid}/friday", method = arrayOf(RequestMethod.POST))
+    fun sendFridaySpecial(@PathVariable uuid: String) {
+        checkExpoisedApiRequest (uuid) {
+            logger.info("Received friday special request")
+            restClient.sendMessage(CHAT_ID, restClient.fetchFridaySpecial())
+        }
+    }
+
     // Total control - setup a model and return the view name yourself. Or consider
     // subclassing ExceptionHandlerExceptionResolver (see below).
     @ExceptionHandler(Exception::class)

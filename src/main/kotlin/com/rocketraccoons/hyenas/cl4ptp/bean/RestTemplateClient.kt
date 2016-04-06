@@ -1,6 +1,7 @@
 package com.rocketraccoons.hyenas.cl4ptp.bean
 
 import com.rocketraccoons.hyenas.cl4ptp.constant.ApiConstants
+import com.rocketraccoons.hyenas.cl4ptp.extension.model.FridaySpecial
 import com.rocketraccoons.hyenas.cl4ptp.model.ApiResponseUpdates
 import com.rocketraccoons.hyenas.cl4ptp.model.ApiResponseUser
 import com.rocketraccoons.hyenas.cl4ptp.model.Update
@@ -47,4 +48,9 @@ class RestTemplateClient(restTemplate: RestTemplate, apiConstants: ApiConstants)
             }, null)
 
     override fun fetchQuote() = restDelegate.execute(apiConstants.quoteUrl, HttpMethod.GET, RequestCallback { }, stringResponseExtractor)
+
+    override fun fetchFridaySpecial(): String {
+        val preview = restDelegate.getForObject(apiConstants.fridaySpecialUrl, Array<FridaySpecial>::class.java)[0].preview
+        return apiConstants.fridaySpecialMediaUrlPrefix + preview
+    }
 }

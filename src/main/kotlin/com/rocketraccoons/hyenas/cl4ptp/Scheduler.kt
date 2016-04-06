@@ -14,4 +14,9 @@ open class Scheduler @Autowired constructor(val bot: BotController, val environm
     open fun onPostLulz() {
         bot.sendLulz(environmentVars.webhookUuid)
     }
+
+    @Scheduled(cron = "0 7 5-20/2 * * FRI")
+    open fun onPostFridaySpecial() {
+        bot.sendFridaySpecial(environmentVars.webhookUuid)
+    }
 }

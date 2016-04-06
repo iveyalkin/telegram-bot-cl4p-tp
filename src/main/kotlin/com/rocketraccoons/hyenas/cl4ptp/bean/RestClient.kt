@@ -14,4 +14,6 @@ interface RestClient {
 
     // third-party API
     fun fetchQuote(): String
+
+    fun fetchFridaySpecial(): String
 }
