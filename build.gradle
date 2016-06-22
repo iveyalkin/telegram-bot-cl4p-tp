@@ -1,16 +1,25 @@
 buildscript {
     ext.kotlin_version = '1.0.0'
     ext.spring_boot_version = '1.3.2.RELEASE'
+    ext.build_config_plugin_version = '1.1.4'
+
     repositories {
         jcenter()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+        classpath "gradle.plugin.de.fuerstenau:BuildConfigPlugin:$build_config_plugin_version"
     }
 }
 
+apply from: 'properties.gradle'
+
 apply plugin: 'java'
+apply plugin: 'de.fuerstenau.buildconfig'
 apply plugin: 'kotlin'
 apply plugin: 'spring-boot'
 apply plugin: 'application'
@@ -66,18 +75,6 @@ sourceSets {
             srcDir "test/main/kotlin"
         }
     }
-    local {
-        kotlin {
-            srcDir "src/local/kotlin"
-        }
-        compileClasspath += sourceSets.main.output
-    }
-    remote {
-        kotlin {
-            srcDir "src/remote/kotlin"
-        }
-        compileClasspath += sourceSets.main.output
-    }
 }
 
 // installDist is important to generate path in Heroku's Procfile:
@@ -86,27 +83,12 @@ task stage {
   dependsOn(clean, installDist)
 }
 
-// experiments with Android like flavours
-task localJar (type: Jar, dependsOn: jar) {
-    from sourceSets.local.output
-    classifier = 'localJar'
-}
+buildConfig {
+    packageName = 'com.rocketraccoons.hyenas.cl4ptp.configuration'
 
-task remoteJar (type: Jar, dependsOn: jar) {
-    from sourceSets.remote.output
-    classifier = 'remoteJar'
-}
+    Properties props = readApplicationProperties()
 
-//compileLocalKotlin.dependsOn compileKotlin
-//compileRemoteKotlin.dependsOn compileKotlin
-
-/*task bootJar
-bootJar.dependsOn localJar
-build.dependsOn(bootJar)*/
-
-task localRun (type: BootRepackage, dependsOn: localJar) {
-    withJarTask = localJar
-    doLast {
-        sourceSets.main.compileClasspath += sourceSets.local.output
-    }
+    buildConfigField 'String', 'BOT_AUTHENTICATION_TOKEN', props.botAuthToken
+    buildConfigField 'String', 'BOT_WEBHOOK_UUID', props.BOT_WEBHOOK_UUID
+    buildConfigField 'String', 'MONGO_URI', props.mongoUrl
 }

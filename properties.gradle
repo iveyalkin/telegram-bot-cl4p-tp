@@ -1,0 +1,81 @@
+gradle.allprojects {
+    /**
+     * Reads the properties needed to build the application.
+     *
+     * The preferred way to define them is in a daft.properties file in the root of the
+     * repository, that should not be checked in the repository.
+     *
+     * In order to run on continuous build machines, properties can also be defined as environment
+     * variables (that is, "$ export GoogleMapsKey=YOURKEY").
+     *
+     * @return set of property that contains all those that are needed to build the app
+     */
+    ext.readApplicationProperties = {
+        Properties props = readProperties("./local.properties")
+
+        String[] properties = [
+                'BOT_AUTHENTICATION_TOKEN',
+                'BOT_WEBHOOK_UUID',
+                'MONGO_URI'
+        ]
+
+        properties.each { property ->
+            props.setProperty(property, readProperty(props, property, true))
+        }
+
+        return props
+    }
+}
+/**
+ * Reads key=value properties out of a property file.
+ *
+ * @param propertyFile relative path of the property file, taken from the project root
+ * @return the set of key-value pairs, or an empty set if the file was not found
+ */
+Properties readProperties(String propertyFile) {
+    Properties props = new Properties()
+    InputStream fis;
+    try {
+        fis = new FileInputStream(new File(propertyFile))
+        props.load(fis)
+    } catch (FileNotFoundException e) {
+        // Ignored. The properties could come from somewhere else
+    } finally {
+        if (null != fis) {
+            fis.close()
+        }
+    }
+    return props;
+}
+
+/**
+ * Reads a property. It can be defined in two ways:
+ *
+ * a) In the provided .properties file
+ * b) As a system environment variable
+ *
+ * @param props set of properties, coming from a .properties file
+ * @param name name of the property to read
+ * @param printValue whether to print the value in the console or not. False by default
+ * @return the value of the property
+ */
+String readProperty(Properties props, String name, boolean printValue = false) {
+    final String value;
+    final String source;
+    if (props.containsKey(name)) {
+        value = props[name]
+        source = "local.properties";
+    } else if (System.getenv(name) != null) {
+        value = System.getenv(name);
+        source = "environment"
+    } else {
+        value = "FAILED"
+        source = ""
+        ant.fail("The property " + name + " is missing. Check your daft.properties file")
+    }
+
+    if (printValue) {
+        println '- ' + name + ' = ' + value + ' (from ' + source + ')'
+    }
+    return value;
+}
