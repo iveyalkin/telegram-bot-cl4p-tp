@@ -88,7 +88,7 @@ buildConfig {
 
     Properties props = readApplicationProperties()
 
-    buildConfigField 'String', 'BOT_AUTHENTICATION_TOKEN', props.botAuthToken
+    buildConfigField 'String', 'BOT_AUTHENTICATION_TOKEN', props.BOT_AUTHENTICATION_TOKEN
     buildConfigField 'String', 'BOT_WEBHOOK_UUID', props.BOT_WEBHOOK_UUID
-    buildConfigField 'String', 'MONGO_URI', props.mongoUrl
+    buildConfigField 'String', 'MONGO_URI', props.MONGO_URI
 }
