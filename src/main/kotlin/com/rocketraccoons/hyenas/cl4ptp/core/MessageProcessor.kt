@@ -20,8 +20,8 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
 
     override fun process(update: Update): Command? {
         val message = update.message
-        val text = message.text
-        if ((null == lastUpdate || (update.updateId > lastUpdate!!)) && null != text) {
+        if ((null == lastUpdate || (update.updateId > lastUpdate!!)) && null != message && null != message.text) {
+            val text = message.text
             lastUpdate = update.updateId
             val commandStart = text.indexOf(botCommands.commandPrefix)
             val directMessageStart = text.indexOf(botCommands.directMessagePrefix)
@@ -34,18 +34,14 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
                     return command
                 }
                 ((directMessageStart > -1 && commandStart < 0) || (directMessageStart > -1 && commandStart > directMessageStart)) -> return null
-                (null != update.message.text) -> {
-                    // TODO: just for lulz
-                    if (text.contains("куп", "воз", "взя", "бери", "бра", "бре")) {
-                        if (text.contains("ящик", "коробку", "иксбокс", "хуан", "xbox")) {
-                            return object : Command {
-                                override val message: Message
-                                    get() = update.message
+                // TODO: just for lulz
+                (text.contains("работу")) -> {
+                    return object : Command {
+                        override val message: Message
+                            get() = message
 
-                                override fun execute(): UpdateSendMessagePayload? {
-                                    return UpdateSendMessagePayload(update.message.chat.id, "Ваня, купи xbox!", update.message.messageId)
-                                }
-                            }
+                        override fun execute(): UpdateSendMessagePayload? {
+                            return UpdateSendMessagePayload(message.chat.id, "Витя, смени работу!", message.messageId)
                         }
                     }
                 }
