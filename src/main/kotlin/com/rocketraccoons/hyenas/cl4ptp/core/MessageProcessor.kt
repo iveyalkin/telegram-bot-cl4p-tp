@@ -39,7 +39,11 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
                             get() = message
 
                         override fun execute(): UpdateSendMessagePayload? {
-                            return UpdateSendMessagePayload(message.chat.id, "What do you need?!", message.messageId)
+                            return UpdateSendMessagePayload(
+                                    message.chat.id,
+                                    "What do you need, ${message.from.firstName}?!",
+                                    message.messageId
+                            )
                         }
                     }
                 }
