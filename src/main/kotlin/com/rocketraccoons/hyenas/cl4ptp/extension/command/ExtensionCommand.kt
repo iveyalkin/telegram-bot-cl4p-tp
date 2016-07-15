@@ -11,7 +11,10 @@ fun BotCommands.getMessageHandlerTask(command: String, message: Message): Comman
     val commandIndex = commands.indexOf(command)
     // TODO: use reflection to retrieve class?
     when (commandIndex) {
-        0 -> return HelpCommand(message)
+        0 -> return HelpCommand(
+                message,
+                message.text!!.substring(message.text.indexOf(commandPrefix + command)).split(" ").toTypedArray()
+        )
         1 -> return EchoCommand(message)
         else -> return UnsupportedCommand(message)
     }

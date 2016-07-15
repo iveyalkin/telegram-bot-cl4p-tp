@@ -8,5 +8,7 @@ import com.rocketraccoons.hyenas.cl4ptp.model.UpdateSendMessagePayload
  */
 interface Command { // TODO: turn into functional object?
     val message: Message
+    val args: Array<String>
+        get() = emptyArray()
     fun execute(): UpdateSendMessagePayload?
 }
