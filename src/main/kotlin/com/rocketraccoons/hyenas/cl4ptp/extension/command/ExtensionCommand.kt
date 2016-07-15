@@ -13,7 +13,10 @@ fun BotCommands.getMessageHandlerTask(command: String, message: Message): Comman
     when (commandIndex) {
         0 -> return HelpCommand(
                 message,
-                message.text!!.substring(message.text.indexOf(commandPrefix + command)).split(" ").toTypedArray()
+                message.text!!.substring(message.text.indexOf(commandPrefix + command) + (commandPrefix + command).length)
+                        .trim()
+                        .split(" ")
+                        .toTypedArray()
         )
         1 -> return EchoCommand(message)
         else -> return UnsupportedCommand(message)

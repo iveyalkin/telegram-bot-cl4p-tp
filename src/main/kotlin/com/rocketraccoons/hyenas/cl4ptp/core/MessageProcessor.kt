@@ -23,17 +23,33 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
         if ((null == lastUpdate || (update.updateId > lastUpdate!!)) && null != message && null != message.text) {
             val text = message.text
             lastUpdate = update.updateId
-            val commandStart = text.indexOf(botCommands.commandPrefix)
-            val directMessageStart = text.indexOf(botCommands.directMessagePrefix)
+            val commandStart = text.indexOf(botCommands.commandPrefix) + 1 // next to the prefix
+            val directMessageStart = text.indexOf(botCommands.directMessagePrefix) + 1 // next to the prefix
+            // TODO: temporary fix
+            if (directMessageStart > 0) {
+                var endIndex = text.indexOf(' ', directMessageStart)
+                if (endIndex > -1) endIndex = text.length
+                if (endIndex > directMessageStart) {
+                    // TODO: hardcoded! bot gets messages if @ is not at the beginning of the message
+                    if (!text.substring(directMessageStart, endIndex).equals("claptrap4bot")) {
+                        return null
+                    }
+                }
+            }
             when {
-                ((commandStart > -1 && directMessageStart < 0) || (commandStart > -1 && directMessageStart > commandStart)) -> {
-                    val endIndex = text.indexOf(' ', commandStart + 1)
-                    val commandString = text.substring(commandStart + 1, if (endIndex > -1) endIndex else text.length)
+                ((commandStart > 0 && directMessageStart < 1) || (commandStart > 0 && directMessageStart > commandStart)) -> {
+                    val endIndex = text.indexOf(' ', commandStart)
+                    if (endIndex <= commandStart) {
+                        // empty command
+                        // TODO: temporary. implement
+                        return null
+                    }
+                    val commandString = text.substring(commandStart, if (endIndex > -1) endIndex else text.length)
                             .split(botCommands.directMessagePrefix)[0]
                     val command = botCommands.getMessageHandlerTask(commandString, message)
                     return command
                 }
-                ((directMessageStart > -1 && commandStart < 0) || (directMessageStart > -1 && commandStart > directMessageStart)) -> {
+                ((directMessageStart > 0 && commandStart < 0) || (directMessageStart > 0 && commandStart > directMessageStart)) -> {
                     return object : Command {
                         override val message: Message
                             get() = message
