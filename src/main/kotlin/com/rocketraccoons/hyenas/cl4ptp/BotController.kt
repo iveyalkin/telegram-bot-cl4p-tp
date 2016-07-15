@@ -31,8 +31,6 @@ class BotController @Autowired constructor(
         val logger: Logger
 ) {
 
-    var lastUpdateId: Long = 0L;
-
     @RequestMapping("/{uuid}/botHook", headers = arrayOf("Content-Type=application/json"), method = arrayOf(RequestMethod.POST))
     fun onHook(@RequestBody update: Update, @PathVariable uuid: String): UpdateSendMessagePayload? {
         return checkExpoisedApiRequest (uuid) {

@@ -33,7 +33,16 @@ class MessageProcessorImpl(val botCommands: BotCommands, storage: ValueStorage) 
                     val command = botCommands.getMessageHandlerTask(commandString, message)
                     return command
                 }
-                ((directMessageStart > -1 && commandStart < 0) || (directMessageStart > -1 && commandStart > directMessageStart)) -> return null
+                ((directMessageStart > -1 && commandStart < 0) || (directMessageStart > -1 && commandStart > directMessageStart)) -> {
+                    return object : Command {
+                        override val message: Message
+                            get() = message
+
+                        override fun execute(): UpdateSendMessagePayload? {
+                            return UpdateSendMessagePayload(message.chat.id, "What do you need?!", message.messageId)
+                        }
+                    }
+                }
                 // TODO: just for lulz
                 (text.contains("работу")) -> {
                     return object : Command {
